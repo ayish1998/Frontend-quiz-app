@@ -21,13 +21,17 @@ module.exports = {
     },
   },
   plugins: ['react-refresh'],
-  rules: {
-    'react/jsx-uses-react': 'off', // Disable warning for unused React import in JSX
-    'react/react-in-jsx-scope': 'off', // Disable warning for React import in scope
+  'rules': {
+    'react/jsx-uses-react': 'off', 
+    'react/react-in-jsx-scope': 'off', 
     'react/jsx-no-target-blank': 'off',
+    'react/prop-types': [
+      'error', // Or 'warn', or 'off'
+      { ignore: false, customValidators: [], skipUndeclared: false }
+    ],
     'react-refresh/only-export-components': [
       'warn',
       { allowConstantExport: true },
     ],
-  },
+  },  
 };

@@ -1,56 +1,132 @@
+/* Define custom fonts */
 @font-face {
   font-family: 'Rubik';
-  src: url('../fonts/Rubik-Regular.ttf') format('truetype');
+  src: url('./assets/fonts/Rubik-Regular.ttf') format('truetype');
   font-weight: 400;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'Rubik';
-  src: url('../fonts/Rubik-Medium.ttf') format('truetype');
+  src: url('./assets/fonts/Rubik-Medium.ttf') format('truetype');
   font-weight: 500;
   font-style: normal;
 }
 
-/* Define other font weights and styles as needed */
+@font-face {
+  font-family: 'Rubik';
+  src: url('./assets/fonts/Rubik-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: bold;
+}
 
+@font-face {
+  font-family: 'Rubik';
+  src: url('./assets/fonts/Rubik-Italic.ttf') format('truetype');
+  font-weight: 400;
+  font-style: italic;
+}
+
+/* Global styles */
 :root {
   font-family: 'Rubik', Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
-
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
+  background-color: #313E51;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
-}
-
-body {
-  margin: 0;
+.quiz-container {
   display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+  justify-content: space-between; 
+  align-items: center;
+  height: 100vh; 
+  padding: 0 5%;
+  background-color: var(--background-color);
+  position: relative;
+  overflow: hidden;
+  flex-direction: row; 
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+
+/* Styles for background images */
+.background-image {
+  position: absolute;
+  width: 30rem;
+  height: 20rem;
+  background-size: contain;
+  background-repeat: no-repeat;
+  z-index: 0;
 }
 
+.background-top-left {
+  top: 0;
+  left: 0;
+  background-image: url('./assets/images/dark_eclipse_up.png');
+}
+
+.background-bottom-right {
+  bottom: 0;
+  right: 0;
+  background-image: url('./assets/images/dark_eclispe.png'); 
+  width: 30rem; 
+  background-position: right bottom; 
+  height: 20; 
+}
+
+.text-container,.button-container {
+  min-height: calc(100vh / 2); 
+}
+
+
+/* Styles for the text container */
+.text-container {
+  flex: 1;
+  text-align: center;
+  margin-right: 0.5rem;
+  z-index: 1;
+}
+
+/* Styles for the button container */
+.button-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  z-index: 1; 
+}
+
+/* Styles for normal header text */
+.header-normal {
+  font-weight: normal;
+  font-family: 'Rubik', sans-serif;
+  font-size: 30px;
+  margin: 0;
+}
+
+/* Styles for bold header text */
+.header-bold {
+  font-family: 'Rubik', sans-serif;
+  font-weight: bold;
+  font-size: 30px;
+  margin: 0;
+}
+
+/* Styles for subject text */
+.subject {
+  font-size: 1em;
+  color: #ABC1E1;
+  font-family: 'Rubik', sans-serif;
+  font-style: italic;
+  margin-bottom: 1rem;
+}
+
+/* Styles for buttons */
 button {
   border-radius: 8px;
   border: 1px solid transparent;
@@ -58,27 +134,39 @@ button {
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
+  background-color: #3B4D66;
+  color: white;
   cursor: pointer;
   transition: border-color 0.25s;
+  display: flex; 
+  align-items: center; 
 }
+
+/* Hover state for buttons */
 button:hover {
   border-color: #646cff;
 }
+
+/* Focus states for buttons */
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
+/* Light mode styles */
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
     background-color: #ffffff;
   }
-  a:hover {
-    color: #747bff;
+ .quiz-container {
+    background-color: var(--background-color);
   }
   button {
     background-color: #f9f9f9;
+    color: black;
+  }
+  button:hover {
+    border-color: #747bff;
   }
 }
