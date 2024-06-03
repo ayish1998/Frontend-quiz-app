@@ -41,6 +41,12 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Container styling starts here */
+#quizContainer.small-text {
+  display: inline;
+  vertical-align: middle;
+}
+
 .quiz-container {
   display: flex;
   justify-content: space-between; 
@@ -57,9 +63,9 @@
 /* Styles for background images */
 .background-image {
   position: absolute;
-  width: 30rem;
-  height: 20rem;
-  background-size: contain;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
   background-repeat: no-repeat;
   z-index: 0;
 }
@@ -67,16 +73,11 @@
 .background-top-left {
   top: 0;
   left: 0;
-  background-image: url('./assets/images/dark_eclipse_up.png');
 }
 
 .background-bottom-right {
   bottom: 0;
   right: 0;
-  background-image: url('./assets/images/dark_eclispe.png'); 
-  width: 30rem; 
-  background-position: right bottom; 
-  height: 20; 
 }
 
 .text-container,.button-container {
@@ -90,7 +91,9 @@
   text-align: center;
   margin-right: 0.5rem;
   z-index: 1;
+  align-items: center; 
 }
+
 
 /* Styles for the button container */
 .button-container {
@@ -100,12 +103,11 @@
   gap: 1rem;
   z-index: 1; 
 }
-
 /* Styles for normal header text */
 .header-normal {
   font-weight: normal;
   font-family: 'Rubik', sans-serif;
-  font-size: 30px;
+  font-size: 50px;
   margin: 0;
 }
 
@@ -113,18 +115,21 @@
 .header-bold {
   font-family: 'Rubik', sans-serif;
   font-weight: bold;
-  font-size: 30px;
+  font-size: 50px;
   margin: 0;
 }
 
 /* Styles for subject text */
-.small-text{
-  font-size: 1em;
+.small-text {
+  font-size: 1em; 
   color: #ABC1E1;
   font-family: 'Rubik', sans-serif;
   font-style: italic;
-  margin-bottom: 1rem;
+  margin-bottom: 1rem; 
+  display: inline; 
+  vertical-align: middle; 
 }
+
 
 /* Styles for buttons */
 button {
@@ -153,24 +158,20 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
-/* Light mode styles */
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
- .quiz-container {
-    background-color: var(--background-color);
-  }
-  button {
-    background-color: #f9f9f9;
-    color: black;
-  }
-  button:hover {
-    border-color: #747bff;
-  }
+
+/* Styling for the mode icons starts here */
+.mode-icons {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 1;
 }
 
+.mode-icon {
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+}
 
 
 /* Media query for tablet and small screens */
@@ -196,7 +197,7 @@ button:focus-visible {
 
   .header-normal,
   .header-bold {
-    font-size: 50px;
+    font-size: 35px;
   }
 
   .small-text {

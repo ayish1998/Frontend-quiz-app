@@ -36,11 +36,11 @@ QuizFrontier is an interactive frontend quiz app built with React and Vite. It c
 
 ### Screenshot
 
-![Screenshot of QuizFrontier](./screenshot.jpg)
+![Screenshot of QuizFrontier](./screenshot.jpg) //Add later please//
 
 ### Links
 
-- Live Demo: [QuizFrontier Live Demo](https://your-live-demo-url.com)
+- Live Demo: [QuizFrontier Live Demo](https://quizfrontier-by-ayisha.vercel.app/)
 - Repository: [QuizFrontier Repository](https://github.com/your-username/QuizFrontier)
 
 ## Installation
@@ -136,15 +136,15 @@ Please ensure that your code adheres to the project's coding conventions and pas
 
 ## License
 
-This project is licensed under the [MIT License](LICENSE).
+This project is licensed under Frontend Mentor [https://www.frontendmentor.io/].
 
 ## Contact
 
 If you have any questions, suggestions, or feedback, please feel free to contact me:
 
-- Email: your-email@example.com
-- Twitter: [@yourusername](https://twitter.com/yourusername)
-- LinkedIn: [Your Name](https://linkedin.com/in/yourname)
+- Email: laariyasaeed@gmail.com
+- X: [@ayishatu_saeed](https://x.com/ayishatu_saeed)
+- LinkedIn: [Ayishatu Saeed](https://www.linkedin.com/in/ayishatu-saeed-6b942a200/)
 
 ## Acknowledgments
 
