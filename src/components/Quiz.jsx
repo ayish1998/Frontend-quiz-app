@@ -22,7 +22,7 @@ function Quiz() {
           <div className="text-container">
             <h2 className="header-normal">Welcome to the</h2>
             <h2 className="header-bold">Frontend Quiz!</h2>
-            <p className="subject">Pick a subject to get started.</p>
+            <p className="small-text">Pick a subject to get started.</p>
           </div>
   
           <div className="button-container">
