@@ -1,15 +1,15 @@
 // Code for the Quiz component
 import { useState } from 'react';
-import iconMoonDark from '/src/assets/images/icon-moon-dark.svg';
-import iconMoonLight from '/src/assets/images/icon-moon-light.svg';
-import iconSunDark from '/src/assets/images/icon-sun-dark.svg';
-import iconSunLight from '/src/assets/images/icon-sun-light.svg';
-import backgroundDesktopDark from '/src/assets/images/pattern-background-desktop-dark.svg';
-import backgroundDesktopLight from '/src/assets/images/pattern-background-desktop-light.svg';
-import backgroundMobileDark from '/src/assets/images/pattern-background-mobile-dark.svg';
-import backgroundMobileLight from '/src/assets/images/pattern-background-mobile-light.svg';
-import backgroundTabletDark from '/src/assets/images/pattern-background-tablet-dark.svg';
-import backgroundTabletLight from '/src/assets/images/pattern-background-tablet-light.svg';
+import iconMoonDark from '/assets/Images/icon-moon-dark.svg';
+import iconMoonLight from '/assets/Images/icon-moon-light.svg';
+import iconSunDark from '/assets/Images/icon-sun-dark.svg';
+import iconSunLight from '/assets/Images/icon-sun-light.svg';
+import backgroundDesktopDark from '/assets/Images/pattern-background-desktop-dark.svg';
+import backgroundDesktopLight from '/assets/Images/pattern-background-desktop-light.svg';
+import backgroundMobileDark from '/assets/Images/pattern-background-mobile-dark.svg';
+import backgroundMobileLight from '/assets/Images/pattern-background-mobile-light.svg';
+import backgroundTabletDark from '/assets/Images/pattern-background-tablet-dark.svg';
+import backgroundTabletLight from '/assets/Images/pattern-background-tablet-light.svg';
 
 function Quiz() {
   // State for toggling dark mode
@@ -22,10 +22,10 @@ function Quiz() {
 
   console.log("Rendering Quiz component"); 
   const subjects = [
-    { name: 'HTML', icon: './src/assets/images/icon-html.svg' },
-    { name: 'CSS', icon: './src/assets/images/icon-css.svg' },
-    { name: 'JavaScript', icon: './src/assets/images/icon-js.svg' },
-    { name: 'Accessibility', icon: './src/assets/images/icon-accessibility.svg' },
+    { name: 'HTML', icon: '/assets/Images/icon-html.svg' },
+    { name: 'CSS', icon: '/assets/Images/icon-css.svg' },
+    { name: 'JavaScript', icon: '/assets/Images/icon-js.svg' },
+    { name: 'Accessibility', icon: '/assets/Images/icon-accessibility.svg' },
   ];
 
   const handleSubjectClick = (subject) => {
