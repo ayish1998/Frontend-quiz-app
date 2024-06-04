@@ -4,6 +4,7 @@ import iconMoonDark from '/assets/Images/icon-moon-dark.svg';
 import iconMoonLight from '/assets/Images/icon-moon-light.svg';
 import iconSunDark from '/assets/Images/icon-sun-dark.svg';
 import iconSunLight from '/assets/Images/icon-sun-light.svg';
+import ToggleSwitch from './ToggleSwitch';
 import backgroundDesktopDark from '/assets/Images/pattern-background-desktop-dark.svg';
 import backgroundDesktopLight from '/assets/Images/pattern-background-desktop-light.svg';
 import backgroundMobileDark from '/assets/Images/pattern-background-mobile-dark.svg';
@@ -15,8 +16,8 @@ function Quiz() {
   // State for toggling dark mode
   const [isDarkMode, setIsDarkMode] = useState(true);
 
-   //Logic for toggling dark mode
-   const toggleMode = () => {
+  //Logic for toggling dark mode
+  const toggleMode = () => {
     setIsDarkMode(!isDarkMode);
   };
 
@@ -30,11 +31,10 @@ function Quiz() {
 
   const handleSubjectClick = (subject) => {
     console.log(`Starting quiz for subject: ${subject.name}`);
-    // Add logic to start the selected quiz
+    // Add logic to start the selected quiz later
   };
 
- 
-// Function to get the background image based on the screen width and dark mode
+  // Function to get the background image based on the screen width and dark mode
   const getBackgroundImage = () => {
     const screenWidth = window.innerWidth;
     if (screenWidth <= 375) {
@@ -50,13 +50,11 @@ function Quiz() {
   return (
     <div className={`viewport-wrapper ${isDarkMode ? 'dark-mode' : 'light-mode'}`}>
       <div className="mode-icons">
-        <img
-          src={isDarkMode ? iconMoonLight : iconSunDark}
-          alt={isDarkMode ? 'Light Mode' : 'Dark Mode'}
-          className="mode-icon"
-          onClick={toggleMode}
-        />
+      <img src={isDarkMode ? iconMoonLight : iconMoonDark} alt="Moon Icon" className="mode-icon" />
+        <ToggleSwitch isOn={isDarkMode} onToggle={toggleMode} />
+        <img src={isDarkMode ? iconSunLight : iconSunDark} alt="Sun Icon" className="mode-icon" />
       </div>
+
       <div id="quizContainer" className="quiz-container">
         {/* Background images */}
         <img src={getBackgroundImage()} alt="Background" className="background-image" />
@@ -71,10 +69,10 @@ function Quiz() {
 
         <div className="button-container">
           {subjects.map((subject, index) => (
-            <button key={index} onClick={() => handleSubjectClick(subject)}>
-              <img src={subject.icon} alt={subject.name} style={{ marginRight: '10px' }} />
-              {subject.name}
-            </button>
+            <button key={index} onClick={() => handleSubjectClick(subject)} className="subject-button" data-subject={subject.name}>
+            <img src={subject.icon} alt={subject.name} className="subject-icon" />
+            {subject.name}
+          </button>
           ))}
         </div>
       </div>

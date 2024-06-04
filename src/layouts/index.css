@@ -39,6 +39,7 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  --primary-color: #A729F5;
 }
 
 /* Container styling starts here */
@@ -49,66 +50,61 @@
 
 .quiz-container {
   display: flex;
-  justify-content: space-between; 
+  justify-content: center; 
   align-items: center;
-  height: 100vh; 
+  height: 100vh;
   padding: 0 5%;
   background-color: var(--background-color);
   position: relative;
   overflow: hidden;
-  flex-direction: row; 
+  flex-direction: row;
 }
-
 
 /* Styles for background images */
 .background-image {
   position: absolute;
-  width: 100%;
-  height: 100%;
-  background-size: cover;
-  background-repeat: no-repeat;
   z-index: 0;
 }
 
 .background-top-left {
   top: 0;
   left: 0;
+  width: 50%;
+  height: 50%;
+  background-size: contain;
+  background-position: top left;
 }
 
 .background-bottom-right {
   bottom: 0;
   right: 0;
+  width: 50%;
+  height: 50%;
+  background-size: contain;
+  background-position: bottom right;
 }
 
-.text-container,.button-container {
-  min-height: calc(100vh / 2); 
+.text-container, .button-container {
+  min-height: calc(100vh / 2);
+  margin: 0 1rem; 
 }
-
 
 /* Styles for the text container */
 .text-container {
   flex: 1;
-  text-align: center;
-  margin-right: 0.5rem;
+  text-align: left;  
+  margin: 0;
+  padding: 0;
   z-index: 1;
-  align-items: center; 
 }
 
-
-/* Styles for the button container */
-.button-container {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  z-index: 1; 
-}
 /* Styles for normal header text */
 .header-normal {
   font-weight: normal;
   font-family: 'Rubik', sans-serif;
   font-size: 50px;
   margin: 0;
+  display: block;
 }
 
 /* Styles for bold header text */
@@ -117,21 +113,28 @@
   font-weight: bold;
   font-size: 50px;
   margin: 0;
+  display: block;
 }
 
-/* Styles for subject text */
+/* Styles for small text */
 .small-text {
-  font-size: 1em; 
+  font-size: 1em;
   color: #ABC1E1;
   font-family: 'Rubik', sans-serif;
   font-style: italic;
-  margin-bottom: 1rem; 
-  display: inline; 
-  vertical-align: middle; 
+  margin: 0;
+  display: block;
 }
 
+/* Styles for the button container */
+.button-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  z-index: 1;
+}
 
-/* Styles for buttons */
 button {
   border-radius: 8px;
   border: 1px solid transparent;
@@ -143,36 +146,77 @@ button {
   color: white;
   cursor: pointer;
   transition: border-color 0.25s;
-  display: flex; 
-  align-items: center; 
+  display: flex;
+  align-items: center;
+  box-shadow: 1px 1px 10px 1px rgba(0, 0, 0, 0.1);
 }
 
 /* Hover state for buttons */
 button:hover {
-  border-color: #646cff;
+  border-color: var(--primary-color);
 }
 
 /* Focus states for buttons */
 button:focus,
 button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+  outline: 4px auto --primary-color;
+}
+
+/* Styles for subject buttons */
+.subject-button {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  text-align: left;
+  padding: 1.2em;
+  position: relative;
+}
+
+/* Styles for subject icons */
+.subject-icon {
+  width: 40px;
+  height: 40px;
+  margin-right: 1.5rem;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 
-/* Styling for the mode icons starts here */
+/* Subject-specific colors */
+.subject-button[data-subject="HTML"] .subject-icon {
+  background-color: #FFF1E9;
+}
+
+.subject-button[data-subject="CSS"] .subject-icon {
+  background-color: #E0FDEF;
+}
+
+.subject-button[data-subject="JavaScript"] .subject-icon {
+  background-color: #EBF0FF;
+}
+
+.subject-button[data-subject="Accessibility"] .subject-icon {
+  background-color: #F6E7FF;
+}
+
+/* Styling for the mode icons */
 .mode-icons {
   position: absolute;
   top: 20px;
-  right: 20px;
+  right: 90px; 
   z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100px; 
 }
 
 .mode-icon {
   width: 24px;
   height: 24px;
-  cursor: pointer;
 }
-
 
 /* Media query for tablet and small screens */
 @media screen and (max-width: 768px) {
@@ -186,13 +230,13 @@ button:focus-visible {
   .text-container {
     margin-right: 0;
     padding-top: 6rem;
-    text-align: left; 
+    text-align: left;
   }
 
   .button-container {
     gap: 1rem;
     width: 100%;
-    margin-top: 2rem; 
+    margin-top: 2rem;
   }
 
   .header-normal,
@@ -203,7 +247,7 @@ button:focus-visible {
   .small-text {
     font-size: 0.9em;
     margin-top: 1rem;
-    text-align: left; 
+    text-align: left;
   }
 
   button {
@@ -220,14 +264,13 @@ button:focus-visible {
   .background-top-left {
     top: 0;
     left: 0;
-    width: 100%; 
-    height: 70%; 
-    background-size: cover; 
-    background-position: left top; 
+    width: 100%;
+    height: 70%;
+    background-size: cover;
+    background-position: left top;
   }
 
   .background-bottom-right {
-    display: none; 
+    display: none;
   }
 }
-

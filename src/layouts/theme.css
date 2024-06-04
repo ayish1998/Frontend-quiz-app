@@ -1,46 +1,35 @@
 /* Dark mode styles */
+.root{
+  --light-mode-bg: #F4F6FA;
+  --dark-mode-bg: #313E51;
+--dark-mode-button-bg: #3B4D66;
+}
 .dark-mode {
-    background-color: #313E51;
-    color: rgba(255, 255, 255, 0.87);
-  }
-  
-  .dark-mode .quiz-container {
-    background-color: #313E51;
-  }
-  
-  .dark-mode button {
-    background-color: #3B4D66;
-    color: white;
-  }
-  
-  /* Light mode styles */
-  .light-mode {
-    background-color: #ffffff;
-    color: #213547;
-  }
-  
-  .light-mode .quiz-container {
-    background-color: #ffffff;
-  }
-  
-  .light-mode button {
-    background-color: #f9f9f9;
-    color: black;
-  }
-  /* Light mode styles */
-  @media (prefers-color-scheme: light) {
-    :root {
-      color: #213547;
-      background-color: #ffffff;
-    }
-   .quiz-container {
-      background-color: var(--background-color);
-    }
-    button {
-      background-color: #f9f9f9;
-      color: black;
-    }
-    button:hover {
-      border-color: #747bff;
-    }
-  }
+  background-color: var(--dark-mode-bg);
+  color: rgba(255, 255, 255, 0.87);
+}
+
+.dark-mode .quiz-container {
+  background-color: var(--dark-mode-bg);
+}
+
+.dark-mode button {
+  background-color: #3B4D66;
+  color: white;
+}
+
+/* Light mode styles */
+.light-mode {
+  background-color: #F4F6FA;
+  color: #213547;
+}
+
+.light-mode .quiz-container {
+  background-color: #ffffff;
+}
+
+.light-mode button {
+  background-color: #ffffff;
+  color: black;
+}
+
