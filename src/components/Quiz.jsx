@@ -1,5 +1,5 @@
 // Code for the Quiz component
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import iconMoonDark from '/assets/Images/icon-moon-dark.svg';
 import iconMoonLight from '/assets/Images/icon-moon-light.svg';
 import iconSunDark from '/assets/Images/icon-sun-dark.svg';
@@ -13,15 +13,6 @@ import backgroundTabletDark from '/assets/Images/pattern-background-tablet-dark.
 import backgroundTabletLight from '/assets/Images/pattern-background-tablet-light.svg';
 
 function Quiz() {
-  // State for toggling dark mode
-  const [isDarkMode, setIsDarkMode] = useState(true);
-
-  //Logic for toggling dark mode
-  const toggleMode = () => {
-    setIsDarkMode(!isDarkMode);
-  };
-
-  console.log("Rendering Quiz component"); 
   const subjects = [
     { name: 'HTML', icon: '/assets/Images/icon-html.svg' },
     { name: 'CSS', icon: '/assets/Images/icon-css.svg' },
@@ -29,12 +20,9 @@ function Quiz() {
     { name: 'Accessibility', icon: '/assets/Images/icon-accessibility.svg' },
   ];
 
-  const handleSubjectClick = (subject) => {
-    console.log(`Starting quiz for subject: ${subject.name}`);
-    // Add logic to start the selected quiz later
-  };
+  const [isDarkMode, setIsDarkMode] = useState(true);
+  const [backgroundImage, setBackgroundImage] = useState('');
 
-  // Function to get the background image based on the screen width and dark mode
   const getBackgroundImage = () => {
     const screenWidth = window.innerWidth;
     if (screenWidth <= 375) {
@@ -46,21 +34,35 @@ function Quiz() {
     }
   };
 
-  // Return the JSX for the Quiz component
+  useEffect(() => {
+    setBackgroundImage(getBackgroundImage());
+
+    const handleResize = () => {
+      setBackgroundImage(getBackgroundImage());
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [isDarkMode]);
+
+  const toggleMode = () => {
+    setIsDarkMode(!isDarkMode);
+  };
+
+  const handleSubjectClick = (subject) => {
+    console.log(`Starting quiz for subject: ${subject.name}`);
+  };
+
   return (
     <div className={`viewport-wrapper ${isDarkMode ? 'dark-mode' : 'light-mode'}`}>
       <div className="mode-icons">
-      <img src={isDarkMode ? iconMoonLight : iconMoonDark} alt="Moon Icon" className="mode-icon" />
+        <img src={isDarkMode ? iconMoonLight : iconMoonDark} alt="Moon Icon" className="mode-icon" />
         <ToggleSwitch isOn={isDarkMode} onToggle={toggleMode} />
         <img src={isDarkMode ? iconSunLight : iconSunDark} alt="Sun Icon" className="mode-icon" />
       </div>
 
       <div id="quizContainer" className="quiz-container">
-        {/* Background images */}
-        <img src={getBackgroundImage()} alt="Background" className="background-image" />
-        <div className="background-image background-top-left"></div>
-        <div className="background-image background-bottom-right"></div>
-
+        <img src={backgroundImage} alt="Background" className="background-image background-top-left" />
         <div className="text-container">
           <h2 className="header-normal">Welcome to the</h2>
           <h2 className="header-bold">Frontend Quiz!</h2>
@@ -70,14 +72,14 @@ function Quiz() {
         <div className="button-container">
           {subjects.map((subject, index) => (
             <button key={index} onClick={() => handleSubjectClick(subject)} className="subject-button" data-subject={subject.name}>
-            <img src={subject.icon} alt={subject.name} className="subject-icon" />
-            {subject.name}
-          </button>
+              <img src={subject.icon} alt={subject.name} className="subject-icon" />
+              {subject.name}
+            </button>
           ))}
         </div>
       </div>
     </div>
-  );
+  )
 }
 
 export default Quiz;
