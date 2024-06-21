@@ -41,7 +41,7 @@ QuizFrontier is an interactive frontend quiz app built with React and Vite. It c
 ### Links
 
 - Live Demo: [QuizFrontier Live Demo](https://quizfrontier-by-ayisha.vercel.app/)
-- Repository: [QuizFrontier Repository](https://github.com/your-username/QuizFrontier)
+- Repository: [QuizFrontier Repository](https://github.com/ayish1998/Frontend-quiz-app)
 
 ## Installation
 
