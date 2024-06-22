@@ -25,10 +25,14 @@ function QuizQuestion({
     }
   };
 
+  console.log("Rendering question:", question);
+
   return (
     <div className="quiz-question">
       <div className="quiz-header">
-        <div className={`quiz-title-container icon-${question.title.toLowerCase()}`}>
+        <div
+          className={`quiz-title-container icon-${question.title.toLowerCase()}`}
+        >
           <img src={question.icon} alt={question.title} className="quiz-icon" />
           <h3 className="quiz-title">{question.title}</h3>
         </div>
@@ -91,7 +95,6 @@ QuizQuestion.propTypes = {
   onNextQuestion: PropTypes.func.isRequired,
   isLastQuestion: PropTypes.bool.isRequired,
   isDarkMode: PropTypes.bool.isRequired,
-
 };
 
 export default QuizQuestion;
