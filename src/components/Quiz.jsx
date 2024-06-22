@@ -1,12 +1,12 @@
-// Code for the Quiz component
 import { useState, useEffect } from "react";
+import ToggleSwitch from "./ToggleSwitch";
+import QuizQuestion from "../components/QuizQuestion";
+import QuizResult from "../components/QuizResult";
+import quizData from "../data.json";
 import iconMoonDark from "/assets/Images/icon-moon-dark.svg";
 import iconMoonLight from "/assets/Images/icon-moon-light.svg";
 import iconSunDark from "/assets/Images/icon-sun-dark.svg";
 import iconSunLight from "/assets/Images/icon-sun-light.svg";
-import ToggleSwitch from "./ToggleSwitch";
-import QuizQuestion from "../components/QuizQuestion";
-import quizData from "../data.json";
 import backgroundDesktopDark from "/assets/Images/pattern-background-desktop-dark.svg";
 import backgroundDesktopLight from "/assets/Images/pattern-background-desktop-light.svg";
 import backgroundMobileDark from "/assets/Images/pattern-background-mobile-dark.svg";
@@ -33,6 +33,11 @@ function Quiz() {
   //Variable keep track of the current question index
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [currentSubject, setCurrentSubject] = useState(null);
+  const [isQuizCompleted, setIsQuizCompleted] = useState(false);
+
+  //Variables to keep track of the scores
+  const [score, setScore] = useState(0);
+  const [totalQuestions, setTotalQuestions] = useState(0);
 
   // Check if the current question is the last question in the quiz
   const isLastQuestion =
@@ -63,37 +68,66 @@ function Quiz() {
   }, [isDarkMode]);
 
   const toggleMode = () => {
-    setIsDarkMode(!isDarkMode);
+    console.log("toggleMode called");
+    setIsDarkMode((prevMode) => !prevMode);
   };
 
   //Function to handle the subject click
   const handleSubjectClick = (subject) => {
     setCurrentSubject(subject);
     setCurrentQuestionIndex(0);
-  };
-
-  //Function to handle the answer submission
-  const handleAnswerSubmission = (selectedOption) => {
-    // Check if the selected option is correct
-    const currentQuestion = currentSubject.questions[currentQuestionIndex];
-    const isCorrect = currentQuestion.options.find(
-      (option) => option.text === selectedOption.text
-    ).isCorrect;
-
-    // Handle the correct/incorrect answer logic here
-    console.log(
-      `Selected option: ${selectedOption.text}, Correct: ${isCorrect}`
-    );
+    setScore(0);
+    setTotalQuestions(0);
+    setIsQuizCompleted(false);
   };
 
   // Function to move to the next question
   const handleNextQuestion = () => {
     if (currentQuestionIndex < currentSubject.questions.length - 1) {
-      setCurrentQuestionIndex(currentQuestionIndex + 1);
+      setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
     } else {
-      // Handle the quiz completion logic here
-      console.log("Quiz completed!");
+      // Quiz completed, display the result
+      console.log("Final score:", score);
+      console.log("Total questions:", totalQuestions);
+      setIsQuizCompleted(true);
     }
+  };
+
+  //Function to handle the answer submission
+  const handleAnswerSubmission = (selectedOption) => {
+    const currentQuestion = currentSubject.questions[currentQuestionIndex];
+    const correctAnswer = currentQuestion.answer;
+
+    console.log("Selected option:", selectedOption);
+    console.log("Correct answer:", correctAnswer);
+
+    const isCorrect = selectedOption.text === correctAnswer;
+
+    setScore((prevScore) => {
+      const newScore = isCorrect ? prevScore + 1 : prevScore;
+      console.log("Is correct:", isCorrect);
+      console.log("New score:", newScore);
+
+      if (currentQuestionIndex === currentSubject.questions.length - 1) {
+        // This is the last question
+        console.log("Quiz completed. Final score:", newScore);
+        setIsQuizCompleted(true);
+      } else {
+        // Move to the next question
+        setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
+      }
+
+      return newScore;
+    });
+  };
+
+  //Function to handle play again feature
+  const handlePlayAgain = () => {
+    setIsQuizCompleted(false);
+    setCurrentSubject(null);
+    setCurrentQuestionIndex(0);
+    setScore(0);
+    setTotalQuestions(0);
   };
 
   //Render the quiz container
@@ -115,52 +149,54 @@ function Quiz() {
         />
       </div>
 
-      <div id="quizContainer" className="quiz-container">
-        <img
-          src={backgroundImage}
-          alt="Background"
-          className="background-image background-top-left"
-        />
-        {!currentSubject ? (
-          <>
-            <div className="text-container">
-              <h2 className="header-normal">Welcome to the</h2>
-              <h2 className="header-bold">Frontend Quiz!</h2>
-              <p className="small-text">Pick a subject to get started.</p>
-            </div>
+      {!isQuizCompleted ? (
+        <div id="quizContainer" className="quiz-container">
+          <img
+            src={backgroundImage}
+            alt="Background"
+            className="background-image background-top-left"
+          />
+          {!currentSubject ? (
+            <>
+              <div className="text-container">
+                <h2 className="header-normal">Welcome to the</h2>
+                <h2 className="header-bold">Frontend Quiz!</h2>
+                <p className="small-text">Pick a subject to get started.</p>
+              </div>
 
-            <div className="button-container">
-              {subjects.map((subject, index) => {
-                const subjectIcon = subjectIcons.find(
-                  (icon) => icon.name === subject.title
-                );
-                return (
-                  <button
-                    key={index}
-                    onClick={() => handleSubjectClick(subject)}
-                    className="subject-button"
-                    data-subject={subject.title}
-                  >
-                    <img
-                      src={subjectIcon?.icon}
-                      alt={subject.title}
-                      className="subject-icon"
-                    />
-                    {subject.title}
-                  </button>
-                );
-              })}
-            </div>
-          </>
-        ) : currentSubject.questions && currentSubject.questions.length > 0 ? (
-          currentSubject.questions[currentQuestionIndex] ? (
+              <div className="button-container">
+                {subjects.map((subject, index) => {
+                  const subjectIcon = subjectIcons.find(
+                    (icon) => icon.name === subject.title
+                  );
+                  return (
+                    <button
+                      key={index}
+                      onClick={() => handleSubjectClick(subject)}
+                      className="subject-button"
+                      data-subject={subject.title}
+                    >
+                      <img
+                        src={subjectIcon?.icon}
+                        alt={subject.title}
+                        className="subject-icon"
+                      />
+                      {subject.title}
+                    </button>
+                  );
+                })}
+              </div>
+            </>
+          ) : currentSubject &&
+            currentSubject.questions &&
+            currentQuestionIndex < currentSubject.questions.length ? (
             <QuizQuestion
               question={{
                 title: currentSubject.title,
                 icon:
                   subjectIcons.find(
                     (icon) => icon.name === currentSubject.title
-                  )?.icon || "", 
+                  )?.icon || "",
                 number: currentQuestionIndex + 1,
                 totalQuestions: currentSubject.questions.length,
                 question:
@@ -168,17 +204,33 @@ function Quiz() {
                 options: currentSubject.questions[currentQuestionIndex].options,
               }}
               onSubmitAnswer={handleAnswerSubmission}
-              onNextQuestion={handleNextQuestion}
-              isLastQuestion={isLastQuestion}
+              isLastQuestion={
+                currentQuestionIndex === currentSubject.questions.length - 1
+              }
               isDarkMode={isDarkMode}
             />
           ) : (
-            <div>Invalid question data.</div>
-          )
-        ) : (
-          <div>No questions available for this subject.</div>
-        )}
-      </div>
+            <div>No more questions available.</div>
+          )}
+        </div>
+      ) : (
+        <>
+          {console.log("Rendering QuizResult with score:", score)}
+          {console.log(
+            "Rendering QuizResult with total questions:",
+            currentSubject.questions.length
+          )}
+          <QuizResult
+            score={score}
+            totalQuestions={currentSubject.questions.length}
+            onPlayAgain={handlePlayAgain}
+            subject={currentSubject?.title}
+            isDarkMode={isDarkMode}
+            toggleMode={toggleMode}
+            backgroundImage={backgroundImage}
+          />
+        </>
+      )}
     </div>
   );
 }
