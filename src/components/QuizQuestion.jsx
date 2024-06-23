@@ -1,33 +1,95 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import "../layouts/QuizQuestion.css";
 
 function QuizQuestion({
   question,
   onSubmitAnswer,
+  onNextQuestion,
   isLastQuestion,
   isDarkMode,
 }) {
+  // State declarations
   const [selectedOption, setSelectedOption] = useState(null);
   const [showResult, setShowResult] = useState(false);
+  const [error, setError] = useState(null);
+  const [isVoiceEnabled, setIsVoiceEnabled] = useState(false);
 
-  const handleOptionClick = (option) => {
-    if (!showResult) {
-      setSelectedOption(option);
+  // Effect to reset state on question change
+  useEffect(() => {
+    setSelectedOption(null);
+    setShowResult(false);
+    setError(null);
+    if (isVoiceEnabled) {
+      console.log("Attempting to speak question");
+      speak(`Question ${question.number}: ${question.question}`);
+    }
+  }, [question, isVoiceEnabled]);
+
+  const speak = (text) => {
+    console.log("Speaking:", text);
+    if ("speechSynthesis" in window && isVoiceEnabled) {
+      const utterance = new SpeechSynthesisUtterance(text);
+      window.speechSynthesis.speak(utterance);
+    } else {
+      console.log("Speech synthesis not available or voice not enabled");
     }
   };
 
+  // Handles option selection
+  const handleOptionClick = (option) => {
+    if (!showResult) {
+      setSelectedOption(option);
+      setError(null);
+      if (isVoiceEnabled) {
+        speak(`Selected option: ${option}`);
+      }
+    }
+  };
+
+  // Handles answer submission
   const handleSubmit = () => {
-    if (selectedOption === null) return;
+    if (selectedOption === null) {
+      setError("Please select an answer");
+      if (isVoiceEnabled) {
+        speak("Please select an answer");
+      }
+      return;
+    }
+    setError(null);
     const isCorrect = selectedOption === question.answer;
     setShowResult(true);
     onSubmitAnswer(selectedOption, isCorrect);
+    if (isVoiceEnabled) {
+      speak(
+        isCorrect
+          ? "Correct!"
+          : "Incorrect. The correct answer is " + question.answer
+      );
+    }
   };
 
+  // Handles navigation to the next question
   const handleNext = () => {
-    onSubmitAnswer(null, false);
+    setShowResult(false);
+    onNextQuestion();
+  };
+  //Handles voice toggle
+  const toggleVoice = () => {
+    console.log("Toggle voice button clicked");
+    setIsVoiceEnabled((prev) => {
+      const newState = !prev;
+      console.log("New voice state:", newState);
+      if (newState) {
+        speak("Voice enabled");
+      } else {
+        console.log("Voice disabled");
+      }
+      return newState;
+    });
   };
 
+  // Determines the CSS class for option buttons
   const getOptionClass = (option) => {
     let className = `option-button ${isDarkMode ? "dark-mode" : "light-mode"}`;
     if (showResult) {
@@ -42,6 +104,18 @@ function QuizQuestion({
     return className;
   };
 
+  // Returns the result icon for an option
+  const getResultIcon = (option) => {
+    if (showResult) {
+      if (option === question.answer) {
+        return <span className="result-icon correct">✓</span>;
+      } else if (selectedOption === option) {
+        return <span className="result-icon incorrect">✗</span>;
+      }
+    }
+    return null;
+  };
+  // JSX structure
   return (
     <div className="quiz-question">
       <div className="quiz-header">
@@ -51,6 +125,9 @@ function QuizQuestion({
           <img src={question.icon} alt={question.title} className="quiz-icon" />
           <h3 className="quiz-title">{question.title}</h3>
         </div>
+        <button onClick={toggleVoice} className="voice-toggle">
+          {isVoiceEnabled ? "🔊" : "🔇"}
+        </button>
       </div>
       <div className="question-options-container">
         <div className="question-container">
@@ -79,35 +156,28 @@ function QuizQuestion({
                 {String.fromCharCode(65 + index)}
               </span>
               <span className="option-text">{option}</span>
-              {showResult && option === question.answer && (
-                <span className="result-icon correct">✓</span>
-              )}
-              {showResult &&
-                selectedOption === option &&
-                option !== question.answer && (
-                  <span className="result-icon incorrect">✗</span>
-                )}
+              {getResultIcon(option)}
             </button>
           ))}
         </div>
       </div>
+      {error && <p className="error-message">{error}</p>}
       <div className="answer-button-container">
-        <button
-          onClick={showResult ? handleNext : handleSubmit}
-          disabled={selectedOption === null}
-          className="answer-button"
-        >
-          {showResult
-            ? isLastQuestion
-              ? "Finish Quiz"
-              : "Next Question"
-            : "Submit Answer"}
-        </button>
+        {showResult ? (
+          <button onClick={handleNext} className="answer-button">
+            {isLastQuestion ? "Finish Quiz" : "Next Question"}
+          </button>
+        ) : (
+          <button onClick={handleSubmit} className="answer-button">
+            Submit Answer
+          </button>
+        )}
       </div>
     </div>
   );
 }
 
+// Prop types
 QuizQuestion.propTypes = {
   question: PropTypes.shape({
     title: PropTypes.string.isRequired,
@@ -119,6 +189,7 @@ QuizQuestion.propTypes = {
     answer: PropTypes.string.isRequired,
   }).isRequired,
   onSubmitAnswer: PropTypes.func.isRequired,
+  onNextQuestion: PropTypes.func.isRequired,
   isLastQuestion: PropTypes.bool.isRequired,
   isDarkMode: PropTypes.bool.isRequired,
 };

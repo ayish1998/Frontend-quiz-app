@@ -14,11 +14,11 @@ import backgroundMobileLight from "/assets/Images/pattern-background-mobile-ligh
 import backgroundTabletDark from "/assets/Images/pattern-background-tablet-dark.svg";
 import backgroundTabletLight from "/assets/Images/pattern-background-tablet-light.svg";
 
+// Main Quiz component that handles the logic and state of the quiz
 function Quiz() {
-  // Using the quizzes array from quizData in the data.json file
   const subjects = quizData.quizzes;
 
-  // Subject icons
+  // Icons corresponding to each quiz subject
   const subjectIcons = [
     { name: "HTML", icon: "/assets/Images/icon-html.svg" },
     { name: "CSS", icon: "/assets/Images/icon-css.svg" },
@@ -26,25 +26,27 @@ function Quiz() {
     { name: "Accessibility", icon: "/assets/Images/icon-accessibility.svg" },
   ];
 
-  //Variable to keep track of the current mode
+  // State declarations
   const [isDarkMode, setIsDarkMode] = useState(true);
   const [backgroundImage, setBackgroundImage] = useState("");
-
-  //Variable keep track of the current question index
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [currentSubject, setCurrentSubject] = useState(null);
   const [isQuizCompleted, setIsQuizCompleted] = useState(false);
-
-  //Variables to keep track of the scores
   const [score, setScore] = useState(0);
-  const [totalQuestions, setTotalQuestions] = useState(0);
 
-  // Check if the current question is the last question in the quiz
+  //function to handle the speech synthesis
+  const speak = (text) => {
+    if ("speechSynthesis" in window) {
+      const utterance = new SpeechSynthesisUtterance(text);
+      window.speechSynthesis.speak(utterance);
+    }
+  };
+  // Determine if the current question is the last in the subject's quiz
   const isLastQuestion =
     currentSubject &&
     currentQuestionIndex === currentSubject.questions.length - 1;
 
-  //Function to get the background image based on the screen width
+  // Function to calculate the background image based on the screen width
   const getBackgroundImage = () => {
     const screenWidth = window.innerWidth;
     if (screenWidth <= 375) {
@@ -55,7 +57,7 @@ function Quiz() {
       return isDarkMode ? backgroundDesktopDark : backgroundDesktopLight;
     }
   };
-
+  // Effect hook for setting up and updating the background image based on screen size or mode change
   useEffect(() => {
     setBackgroundImage(getBackgroundImage());
 
@@ -64,21 +66,37 @@ function Quiz() {
     };
 
     window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, [isDarkMode]);
 
+    // Speak the welcome message when the component mounts and there's no current subject
+    if (!currentSubject) {
+      speak("Welcome to the Frontend Quiz! Pick a subject to get started.");
+    }
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      // Cancel any ongoing speech when unmounting
+      window.speechSynthesis.cancel();
+    };
+  }, [isDarkMode, currentSubject]);
+
+  // Function to toggle between dark and light modes
   const toggleMode = () => {
-    console.log("toggleMode called");
     setIsDarkMode((prevMode) => !prevMode);
   };
 
-  //Function to handle the subject click
+  // Function to handle the selection of a quiz subject
   const handleSubjectClick = (subject) => {
     setCurrentSubject(subject);
     setCurrentQuestionIndex(0);
     setScore(0);
-    setTotalQuestions(0);
     setIsQuizCompleted(false);
+  };
+
+  // Function to handle the submission of an answer
+  const handleAnswerSubmission = (selectedOption, isCorrect) => {
+    if (isCorrect) {
+      setScore((prevScore) => prevScore + 1);
+    }
   };
 
   // Function to move to the next question
@@ -86,46 +104,17 @@ function Quiz() {
     if (currentQuestionIndex < currentSubject.questions.length - 1) {
       setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
     } else {
-      // Quiz completed, display the result
-      console.log("Final score:", score);
-      console.log("Total questions:", totalQuestions);
       setIsQuizCompleted(true);
     }
   };
-
-  //Function to handle the answer submission
-  const handleAnswerSubmission = (selectedOption, isCorrect) => {
-    const currentQuestion = currentSubject.questions[currentQuestionIndex];
-
-    console.log("Selected option:", selectedOption);
-    console.log("Correct answer:", currentQuestion.answer);
-    console.log("Is correct:", isCorrect);
-
-    if (isCorrect) {
-      setScore((prevScore) => {
-        const newScore = prevScore + 1;
-        console.log("New score:", newScore);
-        return newScore;
-      });
-    }
-
-    if (currentQuestionIndex === currentSubject.questions.length - 1) {
-      setIsQuizCompleted(true);
-    } else {
-      setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
-    }
-  };
-
-  //Function to handle play again feature
+  // Function to reset the quiz for a new attempt
   const handlePlayAgain = () => {
     setIsQuizCompleted(false);
     setCurrentSubject(null);
     setCurrentQuestionIndex(0);
     setScore(0);
-    setTotalQuestions(0);
   };
 
-  //Render the quiz container
   return (
     <div
       className={`viewport-wrapper ${isDarkMode ? "dark-mode" : "light-mode"}`}
@@ -182,9 +171,7 @@ function Quiz() {
                 })}
               </div>
             </>
-          ) : currentSubject &&
-            currentSubject.questions &&
-            currentQuestionIndex < currentSubject.questions.length ? (
+          ) : (
             <QuizQuestion
               question={{
                 title: currentSubject.title,
@@ -200,32 +187,24 @@ function Quiz() {
                 answer: currentSubject.questions[currentQuestionIndex].answer,
               }}
               onSubmitAnswer={handleAnswerSubmission}
+              onNextQuestion={handleNextQuestion}
               isLastQuestion={
                 currentQuestionIndex === currentSubject.questions.length - 1
               }
               isDarkMode={isDarkMode}
             />
-          ) : (
-            <div>No more questions available.</div>
           )}
         </div>
       ) : (
-        <>
-          {console.log("Rendering QuizResult with score:", score)}
-          {console.log(
-            "Rendering QuizResult with total questions:",
-            currentSubject.questions.length
-          )}
-          <QuizResult
-            score={score}
-            totalQuestions={currentSubject.questions.length}
-            onPlayAgain={handlePlayAgain}
-            subject={currentSubject?.title}
-            isDarkMode={isDarkMode}
-            toggleMode={toggleMode}
-            backgroundImage={backgroundImage}
-          />
-        </>
+        <QuizResult
+          score={score}
+          totalQuestions={currentSubject.questions.length}
+          onPlayAgain={handlePlayAgain}
+          subject={currentSubject?.title}
+          isDarkMode={isDarkMode}
+          toggleMode={toggleMode}
+          backgroundImage={backgroundImage}
+        />
       )}
     </div>
   );

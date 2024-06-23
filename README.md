@@ -36,7 +36,7 @@ QuizFrontier is an interactive frontend quiz app built with React and Vite. It c
 
 ### Screenshot
 
-![Screenshot of QuizFrontier](./screenshot.jpg) //Add later please//
+![Screenshot of QuizFrontier](./Screenshot_QuizFrontier.jpeg)
 
 ### Links
 
@@ -46,14 +46,16 @@ QuizFrontier is an interactive frontend quiz app built with React and Vite. It c
 ## Installation
 
 1. Clone the repository:
-https://github.com/ayish1998/Frontend-quiz-app
+   https://github.com/ayish1998/Frontend-quiz-app
 2. Navigate to the project directory:
-cd QuizFrontier
+   cd QuizFrontier
 3. Install the dependencies:
-npm install
+   npm install
+
 ## Usage
+
 1. Start the development server:
-npm run dev
+   npm run dev
 2. Open your browser and visit `http://localhost:5173` to access QuizFrontier.
 
 3. Select a quiz subject from the available options.
@@ -76,24 +78,26 @@ npm run dev
 - ESLint: Linting tool for maintaining code quality
 
 ## Project Structure
+
 QuizFrontier/
 ├── public/
-│   └── index.html
+│ └── index.html
 ├── src/
-│   ├── assets/
-│   │   ├── fonts/
-│   │   └── images/
-│   ├── components/
-│   │   ├── Question.jsx
-│   │   └── Quiz.jsx
-│   ├── App.jsx
-│   ├── index.css
-│   └── main.jsx
+│ ├── assets/
+│ │ ├── fonts/
+│ │ └── images/
+│ ├── components/
+│ │ ├── Question.jsx
+│ │ └── Quiz.jsx
+│ ├── App.jsx
+│ ├── index.css
+│ └── main.jsx
 ├── .eslintrc.json
 ├── .gitignore
 ├── package.json
 ├── README.md
 └── vite.config.js
+
 ## Development Process
 
 ### Challenges Faced

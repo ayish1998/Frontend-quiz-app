@@ -1,4 +1,5 @@
 import React from "react";
+import { useEffect } from "react";
 import "../layouts/QuizResult.css";
 import ToggleSwitch from "./ToggleSwitch";
 import iconMoonDark from "/assets/Images/icon-moon-dark.svg";
@@ -18,12 +19,32 @@ function QuizResult({
   console.log("Score received in QuizResult:", score);
   console.log("Total questions received in QuizResult:", totalQuestions);
 
+  //State to store the subject icons
   const subjectIcons = {
     HTML: "/assets/Images/icon-html.svg",
     CSS: "/assets/Images/icon-css.svg",
     JavaScript: "/assets/Images/icon-js.svg",
     Accessibility: "/assets/Images/icon-accessibility.svg",
   };
+
+  // Function to handle speech synthesis
+  const speak = (text) => {
+    if ("speechSynthesis" in window) {
+      const utterance = new SpeechSynthesisUtterance(text);
+      window.speechSynthesis.speak(utterance);
+    }
+  };``
+
+  // Use effect to trigger speech when component mounts
+  useEffect(() => {
+    const resultText = `Quiz completed. You scored ${score} out of ${totalQuestions} in ${subject}.`;
+    speak(resultText);
+
+    // Cleanup function to cancel any ongoing speech when component unmounts
+    return () => {
+      window.speechSynthesis.cancel();
+    };
+  }, [score, totalQuestions, subject]);
 
   return (
     <div
