@@ -5,27 +5,42 @@ import "../layouts/QuizQuestion.css";
 function QuizQuestion({
   question,
   onSubmitAnswer,
-  onNextQuestion,
   isLastQuestion,
   isDarkMode,
 }) {
   const [selectedOption, setSelectedOption] = useState(null);
+  const [showResult, setShowResult] = useState(false);
 
   const handleOptionClick = (option) => {
-    setSelectedOption(option);
-  };
-
-  const handleAnswer = () => {
-    if (selectedOption !== null) {
-      onSubmitAnswer(selectedOption);
-      setSelectedOption(null);
-      if (!isLastQuestion) {
-        onNextQuestion();
-      }
+    if (!showResult) {
+      setSelectedOption(option);
     }
   };
 
-  console.log("Rendering question:", question);
+  const handleSubmit = () => {
+    if (selectedOption === null) return;
+    const isCorrect = selectedOption === question.answer;
+    setShowResult(true);
+    onSubmitAnswer(selectedOption, isCorrect);
+  };
+
+  const handleNext = () => {
+    onSubmitAnswer(null, false);
+  };
+
+  const getOptionClass = (option) => {
+    let className = `option-button ${isDarkMode ? "dark-mode" : "light-mode"}`;
+    if (showResult) {
+      if (option === question.answer) {
+        className += " correct";
+      } else if (selectedOption === option) {
+        className += " incorrect";
+      }
+    } else if (selectedOption === option) {
+      className += " selected";
+    }
+    return className;
+  };
 
   return (
     <div className="quiz-question">
@@ -57,25 +72,36 @@ function QuizQuestion({
             <button
               key={index}
               onClick={() => handleOptionClick(option)}
-              className={`option-button ${
-                selectedOption === option ? "selected" : ""
-              }`}
+              className={getOptionClass(option)}
+              disabled={showResult}
             >
               <span className="option-letter">
                 {String.fromCharCode(65 + index)}
               </span>
               <span className="option-text">{option}</span>
+              {showResult && option === question.answer && (
+                <span className="result-icon correct">✓</span>
+              )}
+              {showResult &&
+                selectedOption === option &&
+                option !== question.answer && (
+                  <span className="result-icon incorrect">✗</span>
+                )}
             </button>
           ))}
         </div>
       </div>
       <div className="answer-button-container">
         <button
-          onClick={handleAnswer}
+          onClick={showResult ? handleNext : handleSubmit}
           disabled={selectedOption === null}
           className="answer-button"
         >
-          {isLastQuestion ? "Submit Quiz" : "Next Question"}
+          {showResult
+            ? isLastQuestion
+              ? "Finish Quiz"
+              : "Next Question"
+            : "Submit Answer"}
         </button>
       </div>
     </div>
@@ -90,9 +116,9 @@ QuizQuestion.propTypes = {
     totalQuestions: PropTypes.number.isRequired,
     question: PropTypes.string.isRequired,
     options: PropTypes.arrayOf(PropTypes.string).isRequired,
+    answer: PropTypes.string.isRequired,
   }).isRequired,
   onSubmitAnswer: PropTypes.func.isRequired,
-  onNextQuestion: PropTypes.func.isRequired,
   isLastQuestion: PropTypes.bool.isRequired,
   isDarkMode: PropTypes.bool.isRequired,
 };
