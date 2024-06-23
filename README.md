@@ -1,6 +1,6 @@
 # QuizFrontier
 
-QuizFrontier is an interactive frontend quiz app built with React and Vite. It challenges users to test their knowledge in various frontend development topics through engaging quizzes. The app provides a seamless user experience with features like subject selection, multiple-choice questions, instant feedback, and score tracking.
+uizFrontier is an interactive frontend quiz app built with React and Vite. It challenges users to test their knowledge in various frontend development topics through engaging quizzes. The app provides a seamless user experience with features like subject selection, multiple-choice questions, instant feedback, score tracking, and accessibility features including voice commands.
 
 ## Table of Contents
 
@@ -33,6 +33,9 @@ QuizFrontier is an interactive frontend quiz app built with React and Vite. It c
 - Error handling for incomplete answer submissions
 - Randomized question order for a dynamic quiz experience
 - Play again option to retry the quiz with a different subject
+- Dark mode toggle for comfortable viewing in different lighting conditions
+- Voice command feature for enhanced accessibility
+- Progress bar to visualize quiz completion status
 
 ### Screenshot
 
@@ -67,6 +70,8 @@ QuizFrontier is an interactive frontend quiz app built with React and Vite. It c
 6. Move on to the next question until you complete the quiz.
 
 7. View your final score and the option to play again with a different subject.
+8. Toggle dark mode for a different visual experience.
+9. Use the voice command feature by clicking the speaker icon to enable/disable voice feedback.
 
 ## Technologies Used
 
@@ -76,6 +81,7 @@ QuizFrontier is an interactive frontend quiz app built with React and Vite. It c
 - CSS: Stylesheet language for designing the app
 - JavaScript: Programming language for app interactivity
 - ESLint: Linting tool for maintaining code quality
+- Web Speech API: For implementing voice command features
 
 ## Project Structure
 
@@ -107,6 +113,9 @@ During the development of QuizFrontier, I encountered a few challenges:
 1. Implementing the logic for handling question submissions and tracking scores.
 2. Ensuring the app's responsiveness across different screen sizes.
 3. Integrating keyboard navigation for improved accessibility.
+4. Implementing the dark mode toggle feature with smooth transitions.
+5. Integrating the Web Speech API for voice commands and ensuring cross-browser compatibility.
+6. Balancing the UI design to accommodate new features without cluttering the interface.
 
 ### Lessons Learned
 
@@ -116,6 +125,9 @@ Through the development process, I learned valuable lessons:
 2. Utilizing React hooks and state management for efficient data handling.
 3. Applying responsive design techniques to create a mobile-friendly experience.
 4. Incorporating accessibility best practices to make the app inclusive.
+5. Implementing accessibility features like voice commands to make the app more inclusive.
+6. Managing state for features like dark mode and voice commands across components.
+7. Optimizing performance when adding new features to maintain a smooth user experience.
 
 ## Future Enhancements
 
@@ -125,6 +137,10 @@ Some potential future enhancements for QuizFrontier include:
 2. Implementing user authentication and personalized quiz tracking.
 3. Expanding the range of quiz subjects to cover more frontend development topics.
 4. Providing detailed explanations for each question after the quiz completion.
+5. Implementing more advanced voice command features, such as voice input for answers.
+6. Adding multi-language support for both text and voice features.
+7. Creating a leaderboard system to encourage competition among users.
+8. Implementing data visualization for quiz results and user progress over time.
 
 ## Contributing
 
@@ -158,5 +174,8 @@ I would like to express my gratitude to the following resources and individuals:
 - [React Documentation](https://reactjs.org/) for the comprehensive guides and examples.
 - [Vite Documentation](https://vitejs.dev/) for the detailed instructions on configuring and building the project.
 - The open-source community for their invaluable contributions and inspiration.
+- [Web Speech API Documentation](https://developer.mozilla.org/en-US/docs/Web/API/Web_Speech_API) for guidance on implementing voice features.
+- [CSS-Tricks](https://css-tricks.com/) for helpful articles on implementing dark mode and other CSS challenges.
+
 
 Thank you for your interest in QuizFrontier! Happy quizzing!

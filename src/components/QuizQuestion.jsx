@@ -58,7 +58,7 @@ function QuizQuestion({
     }
     setError(null);
     const isCorrect = selectedOption === question.answer;
-    setShowResult(true);
+    setShowResult(true); // Always set showResult to true when submitting
     onSubmitAnswer(selectedOption, isCorrect);
     if (isVoiceEnabled) {
       speak(
