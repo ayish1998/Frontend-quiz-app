@@ -94,31 +94,26 @@ function Quiz() {
   };
 
   //Function to handle the answer submission
-  const handleAnswerSubmission = (selectedOption) => {
+  const handleAnswerSubmission = (selectedOption, isCorrect) => {
     const currentQuestion = currentSubject.questions[currentQuestionIndex];
-    const correctAnswer = currentQuestion.answer;
 
     console.log("Selected option:", selectedOption);
-    console.log("Correct answer:", correctAnswer);
+    console.log("Correct answer:", currentQuestion.answer);
+    console.log("Is correct:", isCorrect);
 
-    const isCorrect = selectedOption.text === correctAnswer;
+    if (isCorrect) {
+      setScore((prevScore) => {
+        const newScore = prevScore + 1;
+        console.log("New score:", newScore);
+        return newScore;
+      });
+    }
 
-    setScore((prevScore) => {
-      const newScore = isCorrect ? prevScore + 1 : prevScore;
-      console.log("Is correct:", isCorrect);
-      console.log("New score:", newScore);
-
-      if (currentQuestionIndex === currentSubject.questions.length - 1) {
-        // This is the last question
-        console.log("Quiz completed. Final score:", newScore);
-        setIsQuizCompleted(true);
-      } else {
-        // Move to the next question
-        setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
-      }
-
-      return newScore;
-    });
+    if (currentQuestionIndex === currentSubject.questions.length - 1) {
+      setIsQuizCompleted(true);
+    } else {
+      setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
+    }
   };
 
   //Function to handle play again feature
@@ -202,6 +197,7 @@ function Quiz() {
                 question:
                   currentSubject.questions[currentQuestionIndex].question,
                 options: currentSubject.questions[currentQuestionIndex].options,
+                answer: currentSubject.questions[currentQuestionIndex].answer,
               }}
               onSubmitAnswer={handleAnswerSubmission}
               isLastQuestion={
