@@ -9,16 +9,17 @@ function QuizQuestion({
   isLastQuestion,
   isDarkMode,
 }) {
-  // State declarations
   const [selectedOption, setSelectedOption] = useState(null);
   const [showResult, setShowResult] = useState(false);
   const [error, setError] = useState(null);
   const [isVoiceEnabled, setIsVoiceEnabled] = useState(false);
-
+  const [showIcons, setShowIcons] = useState(false);
+  const [hasSubmitted, setHasSubmitted] = useState(false);
   // Effect to reset state on question change
   useEffect(() => {
     setSelectedOption(null);
     setShowResult(false);
+    setShowIcons(false);
     setError(null);
     if (isVoiceEnabled) {
       console.log("Attempting to speak question");
@@ -35,7 +36,6 @@ function QuizQuestion({
       console.log("Speech synthesis not available or voice not enabled");
     }
   };
-
   // Handles option selection
   const handleOptionClick = (option) => {
     if (!showResult) {
@@ -46,7 +46,6 @@ function QuizQuestion({
       }
     }
   };
-
   // Handles answer submission
   const handleSubmit = () => {
     if (selectedOption === null) {
@@ -58,7 +57,9 @@ function QuizQuestion({
     }
     setError(null);
     const isCorrect = selectedOption === question.answer;
-    setShowResult(true); // Always set showResult to true when submitting
+    setShowResult(true);
+    setShowIcons(true);
+    setHasSubmitted(true);
     onSubmitAnswer(selectedOption, isCorrect);
     if (isVoiceEnabled) {
       speak(
@@ -68,10 +69,11 @@ function QuizQuestion({
       );
     }
   };
-
   // Handles navigation to the next question
   const handleNext = () => {
     setShowResult(false);
+    setShowIcons(false);
+    setHasSubmitted(false);
     onNextQuestion();
   };
   //Handles voice toggle
@@ -92,10 +94,10 @@ function QuizQuestion({
   // Determines the CSS class for option buttons
   const getOptionClass = (option) => {
     let className = `option-button ${isDarkMode ? "dark-mode" : "light-mode"}`;
-    if (showResult) {
+    if (showIcons) {
       if (option === question.answer) {
         className += " correct";
-      } else if (selectedOption === option) {
+      } else if (selectedOption === option && option !== question.answer) {
         className += " incorrect";
       }
     } else if (selectedOption === option) {
@@ -103,13 +105,12 @@ function QuizQuestion({
     }
     return className;
   };
-
   // Returns the result icon for an option
   const getResultIcon = (option) => {
-    if (showResult) {
+    if (showIcons) {
       if (option === question.answer) {
         return <span className="result-icon correct">✓</span>;
-      } else if (selectedOption === option) {
+      } else if (selectedOption === option && option !== question.answer) {
         return <span className="result-icon incorrect">✗</span>;
       }
     }
@@ -150,7 +151,7 @@ function QuizQuestion({
               key={index}
               onClick={() => handleOptionClick(option)}
               className={getOptionClass(option)}
-              disabled={showResult}
+              disabled={hasSubmitted}
             >
               <span className="option-letter">
                 {String.fromCharCode(65 + index)}
@@ -163,7 +164,7 @@ function QuizQuestion({
       </div>
       {error && <p className="error-message">{error}</p>}
       <div className="answer-button-container">
-        {showResult ? (
+        {hasSubmitted ? (
           <button onClick={handleNext} className="answer-button">
             {isLastQuestion ? "Finish Quiz" : "Next Question"}
           </button>
@@ -177,7 +178,6 @@ function QuizQuestion({
   );
 }
 
-// Prop types
 QuizQuestion.propTypes = {
   question: PropTypes.shape({
     title: PropTypes.string.isRequired,
