@@ -1,6 +1,6 @@
 # QuizFrontier
 
-uizFrontier is an interactive frontend quiz app built with React and Vite. It challenges users to test their knowledge in various frontend development topics through engaging quizzes. The app provides a seamless user experience with features like subject selection, multiple-choice questions, instant feedback, score tracking, and accessibility features including voice commands.
+QuizFrontier is an interactive frontend quiz app built with React and Vite. It challenges users to test their knowledge in various frontend development topics through engaging quizzes. The app provides a seamless user experience with features like subject selection, multiple-choice questions, instant feedback, score tracking, and accessibility features including voice commands.
 
 ## Table of Contents
 
