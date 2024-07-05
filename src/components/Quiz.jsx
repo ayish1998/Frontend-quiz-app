@@ -34,13 +34,6 @@ function Quiz() {
   const [isQuizCompleted, setIsQuizCompleted] = useState(false);
   const [score, setScore] = useState(0);
 
-  //function to handle the speech synthesis
-  const speak = (text) => {
-    if ("speechSynthesis" in window) {
-      const utterance = new SpeechSynthesisUtterance(text);
-      window.speechSynthesis.speak(utterance);
-    }
-  };
   // Determine if the current question is the last in the subject's quiz
   const isLastQuestion =
     currentSubject &&
@@ -57,6 +50,7 @@ function Quiz() {
       return isDarkMode ? backgroundDesktopDark : backgroundDesktopLight;
     }
   };
+
   // Effect hook for setting up and updating the background image based on screen size or mode change
   useEffect(() => {
     setBackgroundImage(getBackgroundImage());
@@ -67,15 +61,8 @@ function Quiz() {
 
     window.addEventListener("resize", handleResize);
 
-    // Speak the welcome message when the component mounts and there's no current subject
-    if (!currentSubject) {
-      speak("Welcome to the Frontend Quiz! Pick a subject to get started.");
-    }
-
     return () => {
       window.removeEventListener("resize", handleResize);
-      // Cancel any ongoing speech when unmounting
-      window.speechSynthesis.cancel();
     };
   }, [isDarkMode, currentSubject]);
 
@@ -107,6 +94,7 @@ function Quiz() {
       setIsQuizCompleted(true);
     }
   };
+
   // Function to reset the quiz for a new attempt
   const handlePlayAgain = () => {
     setIsQuizCompleted(false);
